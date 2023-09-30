@@ -9,17 +9,18 @@ import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class ApartmentRaterTest {
 	@Nested
 	class rateApartmentTest{
-		@Test
-		void should_ReturnCorrectRating_When_CorrectApartment() {
-			//given
-			double area = 5.0;
-			BigDecimal price = new BigDecimal(50000);
-			Apartment apartment = new Apartment(area, price);
-			int expected = 2;
+		@ParameterizedTest
+		@CsvSource(value = {"72.0, 250000, 0", "48.0, 350000.0, 1", "30.0, 600000.0, 2"})
+		void should_ReturnCorrectRating_When_CorrectApartment(Double area, double price, int rating) {
+			//given		
+			Apartment apartment = new Apartment(area, new BigDecimal(price));
+			int expected = rating;
 			
 			//when
 			int actual = ApartmentRater.rateApartment(apartment);
